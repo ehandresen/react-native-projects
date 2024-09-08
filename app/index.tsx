@@ -5,45 +5,73 @@ import {
   View,
   Button,
   ScrollView,
+  Alert,
+  FlatList,
 } from 'react-native';
 import { useState } from 'react';
 import { Todo } from '../types/todo';
 
 export default function Page() {
-  const [todo, setTodo] = useState<string>('todo item');
+  const [input, setInput] = useState<string>('');
   const [todoList, setTodoList] = useState<Todo[]>([
     {
-      id: '1',
+      id: '0',
       description: 'item 1',
       isCompleted: false,
     },
     {
-      id: '2',
+      id: '1',
       description: 'item 2',
       isCompleted: false,
     },
     {
-      id: '3',
+      id: '2',
       description: 'item 3',
       isCompleted: true,
     },
   ]);
 
+  console.log(input);
+
+  function addTodo(todoDesc: string): void {
+    if (!todoDesc) {
+      Alert.alert('please enter a todo');
+      return;
+    }
+
+    const newTodo: Todo = {
+      id: todoList.length.toString(),
+      description: input,
+      isCompleted: false,
+    };
+
+    setTodoList([newTodo, ...todoList]);
+  }
+
   return (
     <View style={styles.container}>
       {/* TextInnput and button */}
       <View>
-        <TextInput placeholder="todo item..." />
-        <Button title="add todo" onPress={() => console.log(`${todo}`)} />
+        <TextInput
+          placeholder="new todo..."
+          onChangeText={setInput}
+          // value={todo}
+        />
+        <Button title="add todo" onPress={() => addTodo(input)} />
       </View>
       {/* List */}
-      <ScrollView>
-        {todoList.map((todo) => (
-          <View>
-            <Text>{todo.description}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      <View>
+        <FlatList
+          data={todoList}
+          renderItem={({ item }) => (
+            <View>
+              {/* TODO add checkbox, delete item */}
+              <Text>{item.description}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
     </View>
   );
 }
