@@ -1,12 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { useState } from 'react';
 
 export default function Page() {
+  const [todo, setTodo] = useState<string>('todo item');
+
   return (
     <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Hello World</Text>
-        <Text style={styles.subtitle}>This is the first page of your app.</Text>
+      {/* TextInnput and button */}
+      <View>
+        <TextInput placeholder="todo item..." />
+        <Button title="add todo" onPress={() => console.log(`${todo}`)} />
       </View>
+      {/* List */}
+      <View></View>
     </View>
   );
 }
@@ -16,19 +22,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 24,
-  },
-  main: {
-    flex: 1,
-    justifyContent: 'center',
-    maxWidth: 960,
-    marginHorizontal: 'auto',
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    fontSize: 36,
-    color: '#38434D',
   },
 });
