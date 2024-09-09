@@ -1,0 +1,13 @@
+import { StyleSheet } from 'react-native';
+
+export const globalStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 24,
+  },
+  card: {
+    flexDirection: 'row',
+    marginVertical: 5,
+  },
+});

@@ -1,18 +1,12 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Button,
-  ScrollView,
-  Alert,
-  FlatList,
-} from 'react-native';
+import { TextInput, View, Button, Alert, FlatList } from 'react-native';
 import { useState } from 'react';
 import { Todo } from '../types/todo';
+import TodoCard from './components/TodoCard';
+import { globalStyles } from '../styles/globalStyles';
 
 export default function Page() {
   const [input, setInput] = useState<string>('');
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const [todoList, setTodoList] = useState<Todo[]>([
     {
       id: '0',
@@ -31,11 +25,9 @@ export default function Page() {
     },
   ]);
 
-  console.log(input);
-
   function addTodo(todoDesc: string): void {
     if (!todoDesc) {
-      Alert.alert('please enter a todo');
+      Alert.alert('empty string', 'please enter a todo');
       return;
     }
 
@@ -44,18 +36,18 @@ export default function Page() {
       description: input,
       isCompleted: false,
     };
-
     setTodoList([newTodo, ...todoList]);
+    setInput('');
   }
 
   return (
-    <View style={styles.container}>
-      {/* TextInnput and button */}
+    <View style={globalStyles.container}>
+      {/* TextInput and button */}
       <View>
         <TextInput
           placeholder="new todo..."
           onChangeText={setInput}
-          // value={todo}
+          value={input}
         />
         <Button title="add todo" onPress={() => addTodo(input)} />
       </View>
@@ -63,23 +55,10 @@ export default function Page() {
       <View>
         <FlatList
           data={todoList}
-          renderItem={({ item }) => (
-            <View>
-              {/* TODO add checkbox, delete item */}
-              <Text>{item.description}</Text>
-            </View>
-          )}
+          renderItem={({ item }) => <TodoCard item={item} />}
           keyExtractor={(item) => item.id}
         />
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 24,
-  },
-});
