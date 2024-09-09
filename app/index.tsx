@@ -6,7 +6,6 @@ import { globalStyles } from '../styles/globalStyles';
 
 export default function Page() {
   const [input, setInput] = useState<string>('');
-  const [isChecked, setIsChecked] = useState<boolean>(false);
   const [todoList, setTodoList] = useState<Todo[]>([
     {
       id: '0',
@@ -32,7 +31,7 @@ export default function Page() {
     }
 
     const newTodo: Todo = {
-      id: todoList.length.toString(),
+      id: Math.random().toString(),
       description: input,
       isCompleted: false,
     };
@@ -40,22 +39,45 @@ export default function Page() {
     setInput('');
   }
 
+  function deleteTodo(id: string) {
+    setTodoList(todoList.filter((todo) => todo.id != id));
+  }
+
   return (
     <View style={globalStyles.container}>
       {/* TextInput and button */}
-      <View>
-        <TextInput
-          placeholder="new todo..."
-          onChangeText={setInput}
-          value={input}
-        />
-        <Button title="add todo" onPress={() => addTodo(input)} />
+      <View
+        style={{
+          alignItems: 'center',
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            marginBottom: 20,
+          }}
+        >
+          <TextInput
+            placeholder="add task"
+            onChangeText={setInput}
+            value={input}
+            style={{
+              paddingVertical: 5,
+              paddingHorizontal: 35,
+              backgroundColor: '#F5F2F1',
+              borderRadius: 6,
+            }}
+          />
+          <Button title="add" onPress={() => addTodo(input)} />
+        </View>
       </View>
       {/* List */}
       <View>
         <FlatList
           data={todoList}
-          renderItem={({ item }) => <TodoCard item={item} />}
+          renderItem={({ item }) => (
+            <TodoCard item={item} deleteTodo={deleteTodo} />
+          )}
           keyExtractor={(item) => item.id}
         />
       </View>
