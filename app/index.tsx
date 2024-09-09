@@ -1,4 +1,4 @@
-import { TextInput, View, Button, Alert, FlatList } from 'react-native';
+import { TextInput, View, Button, Alert, FlatList, Text } from 'react-native';
 import { useState } from 'react';
 import { Todo } from '../types/todo';
 import TodoCard from './components/TodoCard';
@@ -62,8 +62,9 @@ export default function Page() {
             onChangeText={setInput}
             value={input}
             style={{
-              paddingVertical: 5,
-              paddingHorizontal: 35,
+              width: '90%',
+              // paddingVertical: 5,
+              paddingHorizontal: 10,
               backgroundColor: '#F5F2F1',
               borderRadius: 6,
             }}
@@ -71,12 +72,16 @@ export default function Page() {
           <Button title="add" onPress={() => addTodo(input)} />
         </View>
       </View>
-      {/* List */}
+
+      {/* todo count */}
+      <Text style={{ marginBottom: 10 }}>Todo count: {todoList.length}</Text>
+
+      {/* todos */}
       <View>
         <FlatList
           data={todoList}
           renderItem={({ item }) => (
-            <TodoCard item={item} deleteTodo={deleteTodo} />
+            <TodoCard item={item} onDelete={deleteTodo} />
           )}
           keyExtractor={(item) => item.id}
         />

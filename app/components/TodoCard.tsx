@@ -7,10 +7,10 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 type TodoCardProps = {
   item: Todo;
-  deleteTodo: (id: string) => void;
+  onDelete: (id: string) => void;
 };
 
-const TodoCard = ({ item, deleteTodo }: TodoCardProps) => {
+const TodoCard = ({ item, onDelete }: TodoCardProps) => {
   const [isCompleted, setIsCompleted] = useState(item.isCompleted);
 
   const style = isCompleted ? styles.lineThrough : {};
@@ -21,10 +21,10 @@ const TodoCard = ({ item, deleteTodo }: TodoCardProps) => {
         isChecked={isCompleted}
         onPress={() => setIsCompleted((prevState) => !prevState)}
       />
-      <Text style={style}>{item.description}</Text>
-      {/* TODO add delete button to each todo item */}
 
-      <Pressable onPress={() => deleteTodo(item.id)}>
+      <Text style={style}>{item.description}</Text>
+
+      <Pressable onPress={() => onDelete(item.id)}>
         <AntDesign
           style={{ marginLeft: 10 }}
           name="delete"
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   lineThrough: {
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
+    opacity: 0.5,
   },
 });
 
